@@ -1,0 +1,95 @@
+import random
+
+# Función para generar daño
+def generar_daño(minimo, maximo):
+    return random.randint(minimo, maximo)
+
+# Mostrar estado
+def mostrar_estado(nombre_h, hp_h, pociones, nombre_e, hp_e):
+    print("\n--- ESTADO ---")
+    print(nombre_h, "HP:", hp_h)
+    print("Pociones:", pociones)
+    print(nombre_e, "HP:", hp_e)
+    print("----------------")
+
+# Juego completo dentro de una función
+def jugar():
+
+    # Mensaje de bienvenida
+    print("===================================")
+    print("   ⚔️  BIENVENIDO AL JUEGO ⚔️")
+    print("===================================")
+    print("Derrota al enemigo usando tus habilidades")
+    print("¡Pero administra bien tus pociones!\n")
+
+    # Datos iniciales
+    nombre_heroe = "Héroe"
+    hp_heroe = 100
+    pociones = 3
+
+    nombre_enemigo = "Enemigo"
+    hp_enemigo = 100
+
+    # Variable para saber si perdiste por pociones
+    perdiste = False
+
+    # Bucle del juego
+    while hp_heroe > 0 and hp_enemigo > 0:
+
+        print("\nTu turno:")
+        print("1. Atacar")
+        print("2. Curarse")
+        print("3. Habilidad especial")
+
+        opcion = input("Elige una opción: ")
+
+        # ATAQUE
+        if opcion == "1":
+            daño = generar_daño(10, 20)
+            hp_enemigo -= daño
+            print("Le hiciste", daño, "de daño al enemigo")
+
+        # CURARSE
+        elif opcion == "2":
+            if pociones > 0:
+                hp_heroe += 20
+                pociones -= 1
+                print("Te curaste 20 HP")
+            else:
+                print("\n❌ No te quedan pociones... PERDISTE")
+                perdiste = True
+                break
+
+        # HABILIDAD ESPECIAL
+        elif opcion == "3":
+            daño = generar_daño(15, 30)
+            hp_enemigo -= daño
+            print("Usaste habilidad especial e hiciste", daño, "de daño")
+
+        else:
+            print("Opción inválida")
+            continue
+
+        # Turno del enemigo
+        if hp_enemigo > 0:
+            daño = generar_daño(10, 20)
+            hp_heroe -= daño
+            print("El enemigo te hizo", daño, "de daño")
+
+        # Mostrar estado
+        mostrar_estado(nombre_heroe, hp_heroe, pociones, nombre_enemigo, hp_enemigo)
+
+    # Resultado final
+    if perdiste or hp_heroe <= 0:
+        print("\n💀 Has perdido el juego...")
+    else:
+        print("\n🏆 ¡Ganaste la batalla!")
+
+# Bucle para reiniciar el juego
+while True:
+    jugar()
+    repetir = input("\n¿Quieres volver a jugar? (s/n): ")
+
+    if repetir.lower() != "s":
+        print("\nGracias por jugar ❤️")
+        break
